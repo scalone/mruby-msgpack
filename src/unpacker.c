@@ -439,6 +439,7 @@ read_primitive(mrb_state *mrb, msgpack_unpacker_t* uk)
     //case 0xd7:  /* big integer 32 */
     //case 0xd8:  /* big float 16 */
 
+    case 0xc4:  /* bin 8 */
     case 0xd9:  /* raw 8 */
       {
         READ_CAST_BLOCK_OR_RETURN_EOF(mrb, cb, uk, 1);
