@@ -330,7 +330,6 @@ Unpacker_reset(mrb_state *mrb, mrb_value self)
 
 mrb_value
 MessagePack_unpack(mrb_state *mrb, mrb_value value)
-
 {
   mrb_value src;
   mrb_value *argv;
@@ -407,14 +406,19 @@ MessagePack_Unpacker_module_init(mrb_state *mrb, struct RClass *mMessagePack)
 
   sym_unpacker_data = mrb_intern_lit(mrb, "unpacker_data");
 
-  cMessagePack_Unpacker = mrb_define_class_under(mrb, mMessagePack, "Unpacker", mrb->object_class);
+  if (cMessagePack_Unpacker == NULL)
+    cMessagePack_Unpacker = mrb_define_class_under(mrb, mMessagePack, "Unpacker", mrb->object_class);
 
+  if (eUnpackError == NULL)
   eUnpackError = mrb_define_class_under(mrb, mMessagePack, "UnpackError", mrb->eStandardError_class);
 
+  if (eMalformedFormatError == NULL)
   eMalformedFormatError = mrb_define_class_under(mrb, mMessagePack, "MalformedFormatError", eUnpackError);
 
+  if (eStackError == NULL)
   eStackError = mrb_define_class_under(mrb, mMessagePack, "StackError", eUnpackError);
 
+  if (eTypeError == NULL)
   eTypeError = mrb_define_class_under(mrb, mMessagePack, "TypeError", mrb->eStandardError_class);
 
   mrb_define_method(mrb, cMessagePack_Unpacker, "initialize", Unpacker_initialize, MRB_ARGS_ANY());
